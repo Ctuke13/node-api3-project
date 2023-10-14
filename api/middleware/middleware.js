@@ -14,7 +14,7 @@ async function validateUserId(req, res, next) {
       req.user = user;
       next();
     } else {
-      next({ status: 404, message: `Hub ${req.params.id} not found` });
+      next({ status: 404, message: `User ${req.params.id} not found` });
     }
   } catch (err) {
     next(err);
@@ -23,6 +23,17 @@ async function validateUserId(req, res, next) {
 
 function validateUser(req, res, next) {
   // DO YOUR MAGIC
+  const { name } = req.user;
+  if (
+    name !== undefined &&
+    typeof name === "string" &&
+    name.length &&
+    name.trim().length
+  ) {
+    next();
+  } else {
+    next({ status: 422, message: "No user name" });
+  }
 }
 
 function validatePost(req, res, next) {
