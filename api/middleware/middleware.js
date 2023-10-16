@@ -23,17 +23,15 @@ async function validateUserId(req, res, next) {
 
 function validateUser(req, res, next) {
   // DO YOUR MAGIC
-  const { name } = req.user;
-  if (
-    name !== undefined &&
-    typeof name === "string" &&
-    name.length &&
-    name.trim().length
-  ) {
-    req.name = name;
-    next();
+  const { name } = req.body;
+
+  if (!name || !name.trim()) {
+    res.status(400).json({
+      message: "missing required name field",
+    });
   } else {
-    next({ status: 422, message: "No user name" });
+    req.name = name.trim();
+    next();
   }
 }
 
@@ -49,7 +47,7 @@ function validatePost(req, res, next) {
     req.text = text.trim();
     next();
   } else {
-    next({ status: 422, message: "No user text" });
+    next({ status: 400, message: "missing required text" });
   }
 }
 
