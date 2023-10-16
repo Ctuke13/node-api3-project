@@ -30,6 +30,7 @@ function validateUser(req, res, next) {
     name.length &&
     name.trim().length
   ) {
+    req.name = name;
     next();
   } else {
     next({ status: 422, message: "No user name" });
@@ -38,6 +39,18 @@ function validateUser(req, res, next) {
 
 function validatePost(req, res, next) {
   // DO YOUR MAGIC
+  const { text } = req.body;
+  if (
+    text !== undefined &&
+    typeof text === "string" &&
+    text.length &&
+    text.trim().length
+  ) {
+    req.text = text.trim();
+    next();
+  } else {
+    next({ status: 422, message: "No user text" });
+  }
 }
 
 // do not forget to expose these functions to other modules
